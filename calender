@@ -1,0 +1,69 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define a structure to store events
+struct Event {
+    char date[11]; // Format: YYYY-MM-DD
+    char description[100];
+};
+
+// Function to add an event
+void addEvent(struct Event events[], int *eventCount) {
+    if (*eventCount < 100) { // Limit to 100 events
+        printf("Enter the date (YYYY-MM-DD): ");
+        scanf("%s", events[*eventCount].date);
+        printf("Enter the event description: ");
+        getchar(); // Consume the newline character
+        fgets(events[*eventCount].description, sizeof(events[*eventCount].description), stdin);
+        (*eventCount)++;
+        printf("Event added successfully!\n");
+    } else {
+        printf("Event limit reached. Cannot add more events.\n");
+    }
+}
+
+// Function to view events for a specific date
+void viewEvents(struct Event events[], int eventCount, char date[]) {
+    printf("Events for %s:\n", date);
+    for (int i = 0; i < eventCount; i++) {
+        if (strcmp(events[i].date, date) == 0) {
+            printf("%s", events[i].description);
+        }
+    }
+}
+
+int main() {
+    struct Event events[100]; // Array to store events
+    int eventCount = 0; // Number of events
+
+    int choice;
+    char date[11];
+
+    while (1) {
+        printf("\nCalendar Management System\n");
+        printf("1. Add Event\n");
+        printf("2. View Events for a Date\n");
+        printf("3. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                addEvent(events, &eventCount);
+                break;
+            case 2:
+                printf("Enter the date (YYYY-MM-DD): ");
+                scanf("%s", date);
+                viewEvents(events, eventCount, date);
+                break;
+            case 3:
+                printf("Exiting Calendar Management System\n");
+                exit(0);
+            default:
+                printf("Invalid choice. Please try again.\n");
+        }
+    }
+
+    return 0;
+}
